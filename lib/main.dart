@@ -1,3 +1,5 @@
+import 'package:enjoyjakarta/regist_screen.dart';
+import 'package:enjoyjakarta/reset_pass.dart';
 import 'package:enjoyjakarta/sign_guest.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
@@ -19,10 +21,11 @@ class MyApp extends StatelessWidget {
       // Application theme data, you can set the colors for the application as
       // you want
       theme: ThemeData(
+        fontFamily: "Plus Jakarta",
         primarySwatch: Colors.orange,
       ),
       // A widget which will be started on application startup
-      home: const LoginScreen(title: 'Enjoy Jakarta'),
+      home: SignGuest(title: 'Enjoy Jakarta'),
     );
   }
 }

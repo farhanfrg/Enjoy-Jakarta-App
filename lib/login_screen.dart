@@ -1,5 +1,8 @@
+import 'package:enjoyjakarta/regist_screen.dart';
+import 'package:enjoyjakarta/reset_pass.dart';
 import 'package:enjoyjakarta/splashscreen.dart';
 import 'package:enjoyjakarta/theme_setup.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'responsiver.dart';
@@ -27,7 +30,7 @@ class _LoginScreen extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: resp.responsiver(height, 80),
+              height: resp.responsiver(height, 70),
             ),
             Image.asset(
               'assets/images/mainlogo.png',
@@ -77,8 +80,8 @@ class _LoginScreen extends State<LoginScreen> {
                     hintStyle: TextStyle(
                         color: themeSetup.secondaryTextColor,
                         fontFamily: "Plus Jakarta",
-                        fontWeight: FontWeight.w100,
-                        fontSize: resp.responsiver(height, 14)),
+                        fontWeight: FontWeight.w300,
+                        fontSize: resp.responsiver(height, 13)),
                     filled: true,
                     fillColor: themeSetup.textFieldColor,
                   ),
@@ -112,24 +115,27 @@ class _LoginScreen extends State<LoginScreen> {
                 right: stebPadding,
                 top: resp.responsiver(height, 15),
               ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                height: resp.responsiver(height, 46),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    hintText: "*********",
+                    hintStyle: TextStyle(
+                        color: themeSetup.secondaryTextColor,
+                        fontFamily: "Plus Jakarta",
+                        fontWeight: FontWeight.w300,
+                        fontSize: resp.responsiver(height, 14)),
+                    filled: true,
+                    fillColor: themeSetup.textFieldColor,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  hintText: "*********",
-                  hintStyle: TextStyle(
-                      color: themeSetup.secondaryTextColor,
-                      fontFamily: "Plus Jakarta",
-                      fontWeight: FontWeight.w100,
-                      fontSize: resp.responsiver(height, 14)),
-                  filled: true,
-                  fillColor: themeSetup.textFieldColor,
                 ),
               ),
             ), // Password Text Field
@@ -162,7 +168,7 @@ class _LoginScreen extends State<LoginScreen> {
                             style: TextStyle(
                               color: themeSetup.secondaryTextColor,
                               fontFamily: "Plus Jakarta",
-                              fontWeight: FontWeight.w100,
+                              fontWeight: FontWeight.w300,
                               fontSize: resp.responsiver(height, 14),
                             ),
                             textAlign: TextAlign.left)
@@ -181,7 +187,7 @@ class _LoginScreen extends State<LoginScreen> {
                           style: TextStyle(
                             color: themeSetup.alertColor,
                             fontFamily: "Plus Jakarta",
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w300,
                             fontSize: resp.responsiver(height, 14),
                           ),
                         )
@@ -199,6 +205,9 @@ class _LoginScreen extends State<LoginScreen> {
                 width: double.infinity,
                 height: resp.responsiver(height, 45),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: themeSetup.accentColor,
+                  ),
                   onPressed: () async {
                     Navigator.push(
                         context,
@@ -221,7 +230,7 @@ class _LoginScreen extends State<LoginScreen> {
                     style: TextStyle(
                         color: themeSetup.white,
                         fontFamily: "Plus Jakarta",
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         fontSize: resp.responsiver(height, 16)),
                   ),
                 ),
@@ -236,13 +245,26 @@ class _LoginScreen extends State<LoginScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    "Lupa password?",
-                    style: TextStyle(
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
                         color: themeSetup.black,
                         fontFamily: "Plus Jakarta",
                         fontWeight: FontWeight.w400,
-                        fontSize: resp.responsiver(height, 14)),
+                        fontSize: resp.responsiver(height, 14),
+                      ),
+                      text: "Lupa password?",
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ResetPass(title: "Reset Password"),
+                            ),
+                          );
+                        },
+                    ),
                   )
                 ],
               ),
@@ -251,7 +273,7 @@ class _LoginScreen extends State<LoginScreen> {
               padding: EdgeInsets.only(
                 left: stebPadding,
                 right: stebPadding,
-                top: resp.responsiver(height, 15),
+                top: resp.responsiver(height, 20),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
@@ -304,7 +326,7 @@ class _LoginScreen extends State<LoginScreen> {
               padding: EdgeInsets.only(
                 left: stebPadding,
                 right: stebPadding,
-                top: resp.responsiver(height, 15),
+                top: resp.responsiver(height, 20),
               ),
               child: Stack(
                 alignment: Alignment.centerLeft,
@@ -323,7 +345,7 @@ class _LoginScreen extends State<LoginScreen> {
                         style: TextStyle(
                           color: themeSetup.black,
                           fontFamily: "Plus Jakarta",
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           fontSize: resp.responsiver(height, 14),
                         ),
                       ),
@@ -332,8 +354,8 @@ class _LoginScreen extends State<LoginScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: stebPadding),
                     child: Container(
-                      width: 30,
-                      height: 30,
+                      width: resp.responsiverw(width, 25),
+                      height: resp.responsiverw(width, 25),
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -350,7 +372,7 @@ class _LoginScreen extends State<LoginScreen> {
               padding: EdgeInsets.only(
                 left: stebPadding,
                 right: stebPadding,
-                top: resp.responsiver(height, 10),
+                top: resp.responsiver(height, 15),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -360,17 +382,29 @@ class _LoginScreen extends State<LoginScreen> {
                     style: TextStyle(
                       color: themeSetup.black,
                       fontFamily: "Plus Jakarta",
-                      fontWeight: FontWeight.w200,
+                      fontWeight: FontWeight.w400,
                       fontSize: resp.responsiver(height, 14),
                     ),
                   ),
-                  Text(
-                    " Daftar Sekarang",
-                    style: TextStyle(
-                      color: themeSetup.blue,
-                      fontFamily: "Plus Jakarta",
-                      fontWeight: FontWeight.w200,
-                      fontSize: resp.responsiver(height, 14),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: themeSetup.blue,
+                        fontFamily: "Plus Jakarta",
+                        fontWeight: FontWeight.w400,
+                        fontSize: resp.responsiver(height, 14),
+                      ),
+                      text: " Daftar sekarang",
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const RegistScreen(title: "Regist Screen"),
+                            ),
+                          );
+                        },
                     ),
                   )
                 ],

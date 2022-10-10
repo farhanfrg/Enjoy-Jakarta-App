@@ -46,7 +46,7 @@ class _SignGuestState extends State<SignGuest> {
                   height: resp.responsiver(height, 231),
                   width: double.infinity,
                   child: Padding(
-                    padding: EdgeInsets.all(stebPadding),
+                    padding: EdgeInsets.all(20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -56,7 +56,7 @@ class _SignGuestState extends State<SignGuest> {
                               color: themeSetup.black,
                               fontFamily: "Plus Jakarta",
                               fontWeight: FontWeight.w700,
-                              fontSize: resp.responsiver(height, 23)),
+                              fontSize: resp.responsiver(height, 24)),
                         ),
                         SizedBox(
                           height: 5,
@@ -93,7 +93,7 @@ class _SignGuestState extends State<SignGuest> {
                               style: TextStyle(
                                   color: themeSetup.white,
                                   fontFamily: "Plus Jakarta",
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w700,
                                   fontSize: resp.responsiver(height, 15)),
                             ),
                           ),
@@ -123,7 +123,7 @@ class _SignGuestState extends State<SignGuest> {
                               style: TextStyle(
                                   color: themeSetup.black,
                                   fontFamily: "Plus Jakarta",
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w700,
                                   fontSize: resp.responsiver(height, 15)),
                             ),
                           ),

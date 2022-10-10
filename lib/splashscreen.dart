@@ -42,7 +42,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
                     style: TextStyle(
                         color: themeSetup.white,
                         fontFamily: "Plus Jakarta",
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                         fontSize: resp.responsiver(height, 40)),
                   ),
                   SizedBox(
@@ -54,7 +54,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
                         color: themeSetup.white,
                         fontFamily: "Plus Jakarta",
                         fontWeight: FontWeight.w500,
-                        fontSize: resp.responsiver(height, 17)),
+                        fontSize: resp.responsiver(height, 16)),
                   ),
                 ],
               ),
