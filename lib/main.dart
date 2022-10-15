@@ -1,3 +1,4 @@
+import 'package:enjoyjakarta/homepage.dart';
 import 'package:enjoyjakarta/regist_screen.dart';
 import 'package:enjoyjakarta/reset_pass.dart';
 import 'package:enjoyjakarta/sign_guest.dart';

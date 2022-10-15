@@ -64,10 +64,11 @@ class _SignGuestState extends State<SignGuest> {
                         Text(
                           "Explore Jakarta with us.",
                           style: TextStyle(
-                              color: themeSetup.black,
-                              fontFamily: "Plus Jakarta",
-                              fontWeight: FontWeight.w500,
-                              fontSize: resp.responsiver(height, 20)),
+                            color: themeSetup.black,
+                            fontFamily: "Plus Jakarta",
+                            fontWeight: FontWeight.w500,
+                            fontSize: resp.responsiver(height, 20),
+                          ),
                         ),
                         SizedBox(
                           height: 12,

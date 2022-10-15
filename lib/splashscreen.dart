@@ -1,3 +1,4 @@
+import 'package:enjoyjakarta/homepage.dart';
 import 'package:enjoyjakarta/sign_guest.dart';
 import 'package:enjoyjakarta/theme_setup.dart';
 import 'package:flutter/material.dart';
@@ -78,10 +79,11 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
             onPressed: () {
               // Navigator.pop(context);
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const SignGuest(title: "Guest Mode")));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Homepage(title: "Home"),
+                ),
+              );
             },
           ),
         ),

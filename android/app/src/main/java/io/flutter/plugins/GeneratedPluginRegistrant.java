@@ -15,5 +15,15 @@ import io.flutter.embedding.engine.FlutterEngine;
 public final class GeneratedPluginRegistrant {
   private static final String TAG = "GeneratedPluginRegistrant";
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
+    try {
+      flutterEngine.getPlugins().add(new com.codeheadlabs.libphonenumber.LibphonenumberPlugin());
+    } catch(Exception e) {
+      Log.e(TAG, "Error registering plugin libphonenumber, com.codeheadlabs.libphonenumber.LibphonenumberPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.example.libphonenumber_plugin.LibphonenumberPlugin());
+    } catch(Exception e) {
+      Log.e(TAG, "Error registering plugin libphonenumber_plugin, com.example.libphonenumber_plugin.LibphonenumberPlugin", e);
+    }
   }
 }

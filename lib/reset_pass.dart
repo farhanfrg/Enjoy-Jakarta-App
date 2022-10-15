@@ -82,7 +82,7 @@ class _ResetPass extends State<ResetPass> {
               padding: EdgeInsets.only(
                 left: stebPadding,
                 right: stebPadding,
-                top: resp.responsiver(height, 40),
+                top: resp.responsiver(height, 25),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
