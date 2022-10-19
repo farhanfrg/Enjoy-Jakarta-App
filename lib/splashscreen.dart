@@ -1,3 +1,4 @@
+import 'package:enjoyjakarta/bottomNavCtrl.dart';
 import 'package:enjoyjakarta/homepage.dart';
 import 'package:enjoyjakarta/sign_guest.dart';
 import 'package:enjoyjakarta/theme_setup.dart';
@@ -17,7 +18,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    final double stebPadding = resp.responsiverw(width, 32);
+    final double stebPadding = resp.responsiverw(width, 20);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -33,7 +34,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
             ]),
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(
-                  stebPadding, stebPadding, stebPadding, 0),
+                  stebPadding, resp.responsiver(height, 50), stebPadding, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +82,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const Homepage(title: "Home"),
+                  builder: (context) => const BottomNavCtrl(title: "Home"),
                 ),
               );
             },

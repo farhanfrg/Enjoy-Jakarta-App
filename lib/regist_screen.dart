@@ -437,7 +437,7 @@ class _RegistScreen extends State<RegistScreen> {
           },
           selectorConfig: SelectorConfig(
               leadingPadding: stebPadding,
-              selectorType: PhoneInputSelectorType.DROPDOWN,
+              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
               setSelectorButtonAsPrefixIcon: true,
               trailingSpace: false),
           selectorTextStyle: TextStyle(
