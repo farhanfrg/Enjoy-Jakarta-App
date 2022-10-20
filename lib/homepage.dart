@@ -350,7 +350,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
             minimumSize: Size.square(
               resp.responsiver(height, 50),
             ),
-            backgroundColor: getCategoryButton(index, "color"),
+            backgroundColor: Color(getCategoryButton(index, "color")),
             shape: const CircleBorder(),
           ),
         ),

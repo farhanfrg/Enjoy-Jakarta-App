@@ -3,7 +3,7 @@ import 'package:enjoyjakarta/homepage.dart';
 import 'package:enjoyjakarta/sign_guest.dart';
 import 'package:enjoyjakarta/theme_setup.dart';
 import 'package:flutter/material.dart';
-import 'responsiver.dart';
+import 'package:enjoyjakarta/responsiver.dart' show resp;
 
 class SplashScreenWidget extends StatefulWidget {
   final String title;
@@ -82,7 +82,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const BottomNavCtrl(title: "Home"),
+                  builder: (context) => BottomNavCtrl(title: "Home"),
                 ),
               );
             },
