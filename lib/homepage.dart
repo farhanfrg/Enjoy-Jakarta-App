@@ -3,6 +3,7 @@ import 'package:enjoyjakarta/splashscreen.dart';
 import 'package:enjoyjakarta/theme_setup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -47,6 +48,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
     final double width = MediaQuery.of(context).size.width;
     final double stebPadding = resp.responsiverw(width, 20);
     final double searchBarHeight = resp.responsiver(height, 46);
+    ScrollController scrollController;
 
     List<Widget> generateButton(int count) {
       List<Widget> items = [];
@@ -59,12 +61,13 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: themeSetup.bgColor,
       body: NestedScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
               title: Visibility(
-                  child: Text("Selamat Pagi, Han Vito"), visible: false),
+                  child: Text("Selamat Pagi, Han Vito"),
+                  visible: innerBoxIsScrolled),
               titleTextStyle: TextStyle(
                 color: themeSetup.white,
                 fontFamily: "Plus Jakarta",
@@ -80,8 +83,11 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
                   height: resp.responsiver(height, 32),
                   width: resp.responsiver(height, 32),
                   child: FloatingActionButton(
+                    heroTag: UniqueKey(),
                     backgroundColor: themeSetup.white,
-                    onPressed: () {},
+                    onPressed: () {
+                      print(context.size!.height);
+                    },
                     child: Icon(
                       Icons.headset_outlined,
                       size: resp.responsiver(height, 16),
@@ -96,6 +102,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
                   height: resp.responsiver(height, 32),
                   width: resp.responsiver(height, 32),
                   child: FloatingActionButton(
+                    heroTag: UniqueKey(),
                     backgroundColor: themeSetup.white,
                     onPressed: () {},
                     child: Icon(
@@ -112,6 +119,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
                   height: resp.responsiver(height, 32),
                   width: resp.responsiver(height, 32),
                   child: FloatingActionButton(
+                    heroTag: UniqueKey(),
                     backgroundColor: menuButton,
                     onPressed: () {
                       if (isMenuTap == false) {
@@ -145,69 +153,73 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
                 )
               ],
               expandedHeight: resp.responsiver(height, 273),
-              flexibleSpace: Stack(
-                children: <Widget>[
-                  Positioned.fill(
-                    bottom: searchBarHeight / 2,
-                    child: Image.asset(
-                      "assets/images/homepic.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    height: resp.responsiver(height, 273),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: stebPadding,
-                        right: resp.responsiverw(width, 130),
-                        bottom: resp.responsiver(height, 30),
-                      ),
-                      child: ListView(
-                        children: [
-                          SizedBox(
-                            height: resp.responsiver(height, 80),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  "Selamat Pagi, Han Vito",
-                                  style: TextStyle(
-                                    color: themeSetup.white,
-                                    fontFamily: "Plus Jakarta",
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: resp.responsiver(height, 16),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: resp.responsiver(height, 15),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  "Explore The Beauty of Journey in Jakarta.",
-                                  style: TextStyle(
-                                    color: themeSetup.white,
-                                    fontFamily: "Plus Jakarta",
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: resp.responsiver(height, 16),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+              flexibleSpace: LayoutBuilder(
+                builder: (buildContext, constraint) => Stack(
+                  children: <Widget>[
+                    Positioned.fill(
+                      bottom: searchBarHeight / 2,
+                      child: Image.asset(
+                        "assets/images/homepic.png",
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  )
-                ],
+                    AnimatedOpacity(
+                      opacity: constraint.biggest.height ==
+                              MediaQuery.of(context).padding.top +
+                                  kToolbarHeight
+                          ? 0.0
+                          : 1.0,
+                      duration: Duration(milliseconds: 300),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: stebPadding,
+                          right: resp.responsiverw(width, 130),
+                          bottom: resp.responsiver(height, 30),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Selamat Pagi, Han Vito",
+                                    style: TextStyle(
+                                      color: themeSetup.white,
+                                      fontFamily: "Plus Jakarta",
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: resp.responsiver(height, 16),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: resp.responsiver(height, 15),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Explore The Beauty of Journey in Jakarta.",
+                                    style: TextStyle(
+                                      color: themeSetup.white,
+                                      fontFamily: "Plus Jakarta",
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: resp.responsiver(height, 16),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
               bottom: PreferredSize(
                 child: Padding(
@@ -235,7 +247,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
                             color: themeSetup.secondaryTextColor,
                             fontFamily: "Plus Jakarta",
                             fontWeight: FontWeight.w300,
-                            fontSize: resp.responsiver(height, 13),
+                            fontSize: resp.responsiver(height, 12),
                           ),
                           filled: true,
                           fillColor: themeSetup.white,
@@ -253,31 +265,32 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
             ),
           ];
         },
-        body: Padding(
-          padding: EdgeInsets.only(
-              left: resp.responsiverw(width, 10),
-              right: resp.responsiverw(width, 10),
-              top: resp.responsiver(height, 20)),
-          child: ListView(
-            children: [
-              Wrap(
+        body: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: resp.responsiver(height, 20),
+                right: resp.responsiverw(width, 10),
+                left: resp.responsiverw(width, 10),
+              ),
+              child: Wrap(
                 children: generateButton(10),
                 alignment: WrapAlignment.center,
                 runAlignment: WrapAlignment.start,
                 spacing: resp.responsiverw(width, 20),
                 runSpacing: resp.responsiver(height, 15),
               ),
-              SizedBox(
-                height: resp.responsiver(height, 15),
-              ),
-              buildContentTitle("Travel News", height, width),
-              buildContentTitle("Wisata Terdekat", height, width),
-              buildContentTitle("Wisata Kawasan", height, width),
-              buildContentTitle("Event", height, width),
-              buildContentTitle("Konversi Mata Uang", height, width),
-              buildContentTitle("Hashgram", height, width),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: resp.responsiver(height, 15),
+            ),
+            buildContentTitle("Travel News", height, width),
+            buildContentTitle("Wisata Terdekat", height, width),
+            buildContentTitle("Wisata Kawasan", height, width),
+            buildContentTitle("Event", height, width),
+            buildContentTitle("Konversi Mata Uang", height, width),
+            buildContentTitle("Hashgram", height, width),
+          ],
         ),
       ),
     );
@@ -350,7 +363,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
             minimumSize: Size.square(
               resp.responsiver(height, 50),
             ),
-            backgroundColor: Color(getCategoryButton(index, "color")),
+            primary: getCategoryButton(index, "color"),
             shape: const CircleBorder(),
           ),
         ),
@@ -372,7 +385,10 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
 
   buildContentTitle(txt, height, width) {
     return Padding(
-      padding: EdgeInsets.all(resp.responsiverw(width, 10)),
+      padding: EdgeInsets.symmetric(
+        horizontal: resp.responsiverw(width, 25),
+        vertical: resp.responsiver(height, 10),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

@@ -71,6 +71,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
           height: resp.responsiver(height, 60),
           width: resp.responsiver(height, 60),
           child: FloatingActionButton(
+            heroTag: UniqueKey(),
             backgroundColor: themeSetup.accentColor,
             child: Icon(
               Icons.arrow_forward,

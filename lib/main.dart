@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
       ),
       // A widget which will be started on application startup
-      home: SignGuest(title: 'Enjoy Jakarta'),
+      home: BottomNavCtrl(title: 'Enjoy Jakarta'),
     );
   }
 }
