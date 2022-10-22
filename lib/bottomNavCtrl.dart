@@ -1,14 +1,9 @@
+import 'package:enjoyjakarta/category.dart';
 import 'package:enjoyjakarta/homepage.dart';
-import 'package:enjoyjakarta/login_screen.dart';
 import 'package:enjoyjakarta/maps.dart';
 import 'package:enjoyjakarta/profile.dart';
-import 'package:enjoyjakarta/saved.dart';
-import 'package:enjoyjakarta/splashscreen.dart';
 import 'package:enjoyjakarta/theme_setup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'responsiver.dart';
 
@@ -82,11 +77,11 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
       hideNavigationBarWhenKeyboardShows: true,
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: ItemAnimationProperties(
+      itemAnimationProperties: const ItemAnimationProperties(
         duration: Duration(milliseconds: 200),
         curve: Curves.ease,
       ),
-      screenTransitionAnimation: ScreenTransitionAnimation(
+      screenTransitionAnimation: const ScreenTransitionAnimation(
         animateTabTransition: true,
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
@@ -98,10 +93,13 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
 
   List<Widget> _buildScreens() {
     return [
-      Homepage(title: "Homepage"),
-      Maps(title: "Maps"),
-      Saved(title: "Saved"),
-      Profile(title: "Profile")
+      const Homepage(title: "Homepage"),
+      const Maps(title: "Maps"),
+      const Category(
+          title: "Wisata Tersimpan",
+          color: themeSetup.accentColor,
+          backButton: false),
+      const Profile(title: "Profile")
     ];
   }
 }

@@ -10,7 +10,15 @@ import 'responsiver.dart';
 
 class Category extends StatefulWidget {
   final String title;
-  const Category({Key? key, required this.title}) : super(key: key);
+  final Color color;
+  // final IconData icon;
+  final bool backButton;
+  const Category(
+      {Key? key,
+      required this.title,
+      required this.color,
+      required this.backButton})
+      : super(key: key);
 
   @override
   State<Category> createState() => _Category();
@@ -19,12 +27,136 @@ class Category extends StatefulWidget {
 class _Category extends State<Category> {
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double stebPadding = resp.responsiverw(width, 20);
+    final double searchBarHeight = resp.responsiver(height, 46);
+    final double headerHeight = resp.responsiver(height, 87);
+
+    final String appBarTitle = widget.title;
+
     return Scaffold(
-      body: Column(
-        children: [Text(widget.title)],
+      backgroundColor: themeSetup.bgColor,
+      body: NestedScrollView(
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
+          SliverAppBar(
+            leading: Visibility(
+              visible: widget.backButton,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: resp.responsiverw(width, 15),
+                ),
+                child: GestureDetector(
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    color: themeSetup.white,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(
+                  right: resp.responsiverw(width, 15),
+                ),
+                child: Image.asset(
+                  'assets/images/plusJakarta.png',
+                  width: resp.responsiverw(width, 18),
+                  height: resp.responsiver(height, 32),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ],
+            toolbarHeight: headerHeight,
+            pinned: true,
+            backgroundColor: themeSetup.bgColor,
+            elevation: 0,
+            collapsedHeight: headerHeight,
+            flexibleSpace: Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  bottom: searchBarHeight / 2,
+                  child: SizedBox(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(color: widget.color),
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: searchBarHeight),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            appBarTitle,
+                            style: TextStyle(
+                              color: themeSetup.white,
+                              fontFamily: "Plus Jakarta",
+                              fontWeight: FontWeight.w700,
+                              fontSize: resp.responsiver(height, 20),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            bottom: PreferredSize(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: resp.responsiverw(width, 15),
+                  right: resp.responsiverw(width, 15),
+                ),
+                child: SizedBox(
+                  height: searchBarHeight,
+                  child: Material(
+                    elevation: 2,
+                    borderRadius: BorderRadius.circular(8),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        hintText: "Cari $appBarTitle...",
+                        hintStyle: TextStyle(
+                          color: themeSetup.secondaryTextColor,
+                          fontFamily: "Plus Jakarta",
+                          fontWeight: FontWeight.w300,
+                          fontSize: resp.responsiver(height, 12),
+                        ),
+                        filled: true,
+                        fillColor: themeSetup.white,
+                        prefixIcon: const Icon(Icons.search),
+                        prefixIconColor: themeSetup.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              preferredSize: Size.fromHeight(
+                resp.responsiver(height, 51),
+              ),
+            ),
+          ),
+        ],
+        body: const Text(""),
       ),
     );
   }
-
-  returnCategory() {}
 }

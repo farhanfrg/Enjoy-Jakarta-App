@@ -24,7 +24,7 @@ class _LoginScreen extends State<LoginScreen> {
     final double width = MediaQuery.of(context).size.width;
     final double stebPadding = resp.responsiverw(width, 20);
     return Scaffold(
-      backgroundColor: Color(0xfffefafa),
+      backgroundColor: const Color(0xfffefafa),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -69,11 +69,11 @@ class _LoginScreen extends State<LoginScreen> {
                 child: TextFormField(
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: const BorderSide(color: Colors.transparent),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: const BorderSide(color: Colors.transparent),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     hintText: "Ketik disini",
@@ -120,11 +120,11 @@ class _LoginScreen extends State<LoginScreen> {
                 child: TextFormField(
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: const BorderSide(color: Colors.transparent),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: const BorderSide(color: Colors.transparent),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     hintText: "*********",
@@ -284,7 +284,7 @@ class _LoginScreen extends State<LoginScreen> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Divider(
+                        const Divider(
                           thickness: 1,
                           endIndent: 10,
                           color: Colors.black,
@@ -311,7 +311,7 @@ class _LoginScreen extends State<LoginScreen> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Divider(
+                        const Divider(
                           thickness: 1,
                           indent: 10,
                           color: Colors.black,
@@ -357,7 +357,7 @@ class _LoginScreen extends State<LoginScreen> {
                       width: resp.responsiverw(width, 25),
                       height: resp.responsiverw(width, 25),
                       clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                       ),
                       child: Image.asset(
