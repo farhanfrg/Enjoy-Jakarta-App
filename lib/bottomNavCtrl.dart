@@ -28,7 +28,7 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
       return [
         PersistentBottomNavBarItem(
           icon: Icon(
-            Icons.home,
+            Icons.home_filled,
             size: resp.responsiver(height, 35),
           ),
           title: "Home",
@@ -37,7 +37,7 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
         ),
         PersistentBottomNavBarItem(
           icon: Icon(
-            Icons.location_on,
+            Icons.location_on_rounded,
             size: resp.responsiver(height, 35),
           ),
           title: "Maps",
@@ -95,10 +95,12 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
     return [
       const Homepage(title: "Homepage"),
       const Maps(title: "Maps"),
-      const Category(
+      Category(
           title: "Wisata Tersimpan",
           color: themeSetup.accentColor,
-          backButton: false),
+          header: "Wisata Tersimpan",
+          backButton: false,
+          searchBar: true),
       const Profile(title: "Profile")
     ];
   }

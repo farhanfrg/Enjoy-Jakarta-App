@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:measure_size/measure_size.dart';
 import 'responsiver.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class Homepage extends StatefulWidget {
   final String title;
@@ -20,19 +22,23 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
 
   bool isMenuTap = false;
   late AnimationController menuAnimationCtrl;
-  Color menuIcon = themeSetup.mainTextColor;
+  Color menuIcon = themeSetup.mainBlue;
   Color menuButton = themeSetup.white;
 
   bool isPinned = false;
 
   bool isAudioPlayed = false;
 
+  bool isHamburgerOpen = false;
+
+  bool isHamburgerVisible = false;
+
   @override
   void initState() {
     menuAnimationCtrl = AnimationController(
-      duration: const Duration(seconds: 0, milliseconds: 200),
+      duration: const Duration(seconds: 0, milliseconds: 700),
       vsync: this,
-      reverseDuration: const Duration(seconds: 0, milliseconds: 200),
+      reverseDuration: const Duration(seconds: 0, milliseconds: 700),
     );
     super.initState();
   }
@@ -51,434 +57,1154 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
     final double searchBarHeight = resp.responsiver(height, 46);
     final double hideHeaderText = resp.responsiver(height, 220);
 
-    List<Widget> generateButton(int count) {
+    List<Widget> generateButton(count) {
       List<Widget> items = [];
       for (int i = 0; i < count; i++) {
-        items.add(buildButton(i, height, width));
+        items.add(
+          buildButton(i, height, width),
+        );
       }
       return items;
     }
 
-    return Scaffold(
-      backgroundColor: themeSetup.bgColor,
-      body: NestedScrollView(
-        physics: const ClampingScrollPhysics(),
-        headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
-          SliverAppBar(
-            title: AnimatedOpacity(
-              opacity: isPinned ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              child: const Text("Selamat Pagi, Han Vito"),
-            ),
-            titleTextStyle: TextStyle(
-              color: themeSetup.white,
-              fontFamily: "Plus Jakarta",
-              fontWeight: FontWeight.w500,
-              fontSize: resp.responsiver(height, 16),
-            ),
-            pinned: true,
-            backgroundColor: themeSetup.bgColor,
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            actions: [
-              SizedBox(
-                height: resp.responsiver(height, 32),
-                width: resp.responsiver(height, 32),
-                child: FloatingActionButton(
-                  heroTag: UniqueKey(),
-                  backgroundColor: themeSetup.white,
-                  onPressed: () {
-                    setState(() {
-                      isAudioPlayed = !isAudioPlayed;
-                    });
-                  },
-                  child: Icon(
-                    isAudioPlayed ? Icons.stop : Icons.headset_outlined,
-                    size: resp.responsiver(height, 16),
-                    color: themeSetup.mainTextColor,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: resp.responsiverw(width, 10),
-              ),
-              SizedBox(
-                height: resp.responsiver(height, 32),
-                width: resp.responsiver(height, 32),
-                child: FloatingActionButton(
-                  heroTag: UniqueKey(),
-                  backgroundColor: themeSetup.white,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Category(
-                            title: "Notifikasi",
-                            color: themeSetup.accentColor,
-                            backButton: true),
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.notifications_outlined,
-                    size: resp.responsiver(height, 16),
-                    color: themeSetup.mainTextColor,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: resp.responsiverw(width, 10),
-              ),
-              SizedBox(
-                height: resp.responsiver(height, 32),
-                width: resp.responsiver(height, 32),
-                child: FloatingActionButton(
-                  heroTag: UniqueKey(),
-                  backgroundColor: menuButton,
-                  onPressed: () {
-                    if (isMenuTap == false) {
-                      isMenuTap = true;
-                      menuIcon = themeSetup.white;
-                      menuButton = themeSetup.alertColor;
-                      setState(
-                        () {
-                          menuAnimationCtrl.forward();
-                        },
-                      );
-                    } else {
-                      isMenuTap = false;
-                      menuIcon = themeSetup.mainTextColor;
-                      menuButton = themeSetup.white;
-                      setState(
-                        () {
-                          menuAnimationCtrl.reverse();
-                        },
-                      );
-                    }
-                  },
-                  child: AnimatedIcon(
-                    icon: AnimatedIcons.menu_close,
-                    progress: menuAnimationCtrl,
-                    size: resp.responsiver(height, 16),
-                    color: menuIcon,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: stebPadding,
-              )
-            ],
-            expandedHeight: resp.responsiver(height, 273),
-            flexibleSpace: Stack(
-              children: <Widget>[
-                Positioned.fill(
-                  bottom: searchBarHeight / 2,
-                  child: Image.asset(
-                    "assets/images/homepic.png",
-                    fit: BoxFit.cover,
-                    color: const Color.fromARGB(80, 0, 0, 0),
-                    colorBlendMode: BlendMode.softLight,
-                  ),
-                ),
-                LayoutBuilder(
-                  builder: (context, p1) => MeasureSize(
-                    onChange: (size) {
-                      setState(
-                        () {
-                          if (context.size!.height < hideHeaderText) {
-                            isPinned = true;
-                          } else {
-                            isPinned = false;
-                          }
-                        },
-                      );
-                    },
+    List<Widget> generateWisataKawasan(count, title) {
+      List<Widget> items = [];
+      for (int i = 0; i < count; i++) {
+        items.add(Text(title[i]));
+      }
+      return items;
+    }
+
+    Future<bool> _onWillPop() async {
+      return false;
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: themeSetup.bgColor,
+        body: Stack(
+          children: [
+            NestedScrollView(
+              physics: const BouncingScrollPhysics(),
+              headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
+                SliverAppBar(
+                  title: Padding(
+                    padding:
+                        EdgeInsets.only(left: resp.responsiverw(width, 10)),
                     child: AnimatedOpacity(
-                      opacity: isPinned ? 0.0 : 1.0,
+                      opacity: isPinned ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 500),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: stebPadding,
-                          right: resp.responsiverw(width, 130),
-                          bottom: searchBarHeight,
+                      child: const Text("Selamat Pagi, Han Vito"),
+                    ),
+                  ),
+                  titleTextStyle: TextStyle(
+                    color: themeSetup.white,
+                    fontFamily: "Plus Jakarta",
+                    fontWeight: FontWeight.w500,
+                    fontSize: resp.responsiver(height, 16),
+                  ),
+                  pinned: true,
+                  backgroundColor: themeSetup.clear,
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  expandedHeight: resp.responsiver(height, 273),
+                  flexibleSpace: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        bottom: searchBarHeight / 2,
+                        child: Image.asset(
+                          "assets/images/homepic.png",
+                          fit: BoxFit.cover,
+                          color: Color.fromARGB(18, 0, 0, 0),
+                          colorBlendMode: BlendMode.softLight,
                         ),
-                        child: ListView(
-                            physics: const NeverScrollableScrollPhysics(),
+                      ),
+                      LayoutBuilder(
+                        builder: (context, p1) => MeasureSize(
+                          onChange: (size) {
+                            setState(
+                              () {
+                                if (context.size!.height < hideHeaderText) {
+                                  isPinned = true;
+                                } else {
+                                  isPinned = false;
+                                }
+                              },
+                            );
+                          },
+                          child: AnimatedOpacity(
+                            opacity: isPinned ? 0.0 : 1.0,
+                            duration: const Duration(milliseconds: 500),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: stebPadding,
+                                right: resp.responsiverw(width, 130),
+                                bottom: searchBarHeight,
+                              ),
+                              child: ListView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: resp.responsiver(height, 20),
+                                      ),
+                                      Hero(
+                                        tag: "jakartaPlus",
+                                        transitionOnUserGestures: true,
+                                        child: Image.asset(
+                                          'assets/images/plusJakarta.png',
+                                          width: resp.responsiver(height, 28),
+                                          height: resp.responsiver(height, 55),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: resp.responsiver(height, 10),
+                                      ),
+                                      Text(
+                                        "Selamat Pagi, Han Vito",
+                                        style: TextStyle(
+                                          color: themeSetup.white,
+                                          fontFamily: "Plus Jakarta",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize:
+                                              resp.responsiver(height, 16),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: resp.responsiver(height, 15),
+                                      ),
+                                      Text(
+                                        "Explore The Beauty of Journey in Jakarta.",
+                                        style: TextStyle(
+                                          color: themeSetup.white,
+                                          fontFamily: "Plus Jakarta",
+                                          fontWeight: FontWeight.w300,
+                                          fontSize:
+                                              resp.responsiver(height, 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  bottom: PreferredSize(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: resp.responsiverw(width, 15),
+                        right: resp.responsiverw(width, 15),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: searchBarHeight,
+                        child: Material(
+                          elevation: 2,
+                          borderRadius: BorderRadius.circular(8),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              hintText: "Cari destinasi wisata...",
+                              hintStyle: TextStyle(
+                                color: themeSetup.secondaryTextColor,
+                                fontFamily: "Plus Jakarta",
+                                fontWeight: FontWeight.w400,
+                                fontSize: resp.responsiver(height, 14),
+                              ),
+                              filled: true,
+                              fillColor: themeSetup.white,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                size: resp.responsiver(height, 18),
+                              ),
+                              prefixIconColor: themeSetup.mainBlue,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    preferredSize: Size.fromHeight(
+                      searchBarHeight,
+                    ),
+                  ),
+                ),
+              ],
+              body: ListView(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: resp.responsiver(height, 20),
+                      right: resp.responsiverw(width, 20),
+                      left: resp.responsiverw(width, 20),
+                    ),
+                    child: Wrap(
+                      children: generateButton(categoryIndex.length),
+                      alignment: WrapAlignment.spaceBetween,
+                      runAlignment: WrapAlignment.start,
+                      spacing: resp.responsiverw(width, 15),
+                      runSpacing: resp.responsiver(height, 15),
+                    ),
+                  ),
+                  SizedBox(
+                    height: resp.responsiver(height, 15),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: resp.responsiver(height, 20),
+                      right: stebPadding,
+                      left: stebPadding,
+                    ),
+                    child: Card(
+                      color: themeSetup.clear,
+                      surfaceTintColor: themeSetup.clear,
+                      shadowColor: themeSetup.clear,
+                      child: Material(
+                        elevation: 3,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          height: resp.responsiver(height, 136),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            gradient: const LinearGradient(
+                              colors: [
+                                themeSetup.bgColor,
+                                Color(0xffD2ECFB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          padding: EdgeInsets.all(
+                            resp.responsiverw(width, 12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(
-                                    height: resp.responsiver(height, 20),
-                                  ),
-                                  Image.asset(
-                                    'assets/images/plusJakarta.png',
-                                    width: resp.responsiverw(width, 28),
-                                    height: resp.responsiver(height, 55),
-                                    fit: BoxFit.contain,
-                                  ),
-                                  SizedBox(
-                                    height: resp.responsiver(height, 10),
-                                  ),
                                   Text(
-                                    "Selamat Pagi, Han Vito",
+                                    DateFormat("EEEE, d MMMM yyyy", "id_ID")
+                                        .format(
+                                      DateTime.now(),
+                                    ),
                                     style: TextStyle(
-                                      color: themeSetup.white,
+                                      color: themeSetup.mainBlue,
                                       fontFamily: "Plus Jakarta",
                                       fontWeight: FontWeight.w500,
-                                      fontSize: resp.responsiver(height, 16),
+                                      fontSize: resp.responsiver(height, 12),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: resp.responsiver(height, 15),
+                                  Text(
+                                    "29°C",
+                                    style: TextStyle(
+                                      color: themeSetup.mainBlue,
+                                      fontFamily: "Plus Jakarta",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: resp.responsiver(height, 46),
+                                    ),
                                   ),
                                   Text(
-                                    "Explore The Beauty of Journey in Jakarta.",
+                                    "Jakarta Utara",
                                     style: TextStyle(
-                                      color: themeSetup.white,
+                                      color: themeSetup.mainBlue,
                                       fontFamily: "Plus Jakarta",
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: resp.responsiver(height, 16),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: resp.responsiver(height, 12),
                                     ),
                                   ),
                                 ],
                               ),
-                            ]),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            bottom: PreferredSize(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: resp.responsiverw(width, 15),
-                  right: resp.responsiverw(width, 15),
-                ),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: searchBarHeight,
-                  child: Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(8),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        hintText: "Cari destinasi wisata...",
-                        hintStyle: TextStyle(
-                          color: themeSetup.secondaryTextColor,
-                          fontFamily: "Plus Jakarta",
-                          fontWeight: FontWeight.w300,
-                          fontSize: resp.responsiver(height, 12),
-                        ),
-                        filled: true,
-                        fillColor: themeSetup.white,
-                        prefixIcon: const Icon(Icons.search),
-                        prefixIconColor: themeSetup.mainTextColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              preferredSize: Size.fromHeight(
-                searchBarHeight,
-              ),
-            ),
-          ),
-        ],
-        body: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: resp.responsiver(height, 20),
-                right: resp.responsiverw(width, 20),
-                left: resp.responsiverw(width, 20),
-              ),
-              child: Wrap(
-                children: generateButton(10),
-                alignment: WrapAlignment.spaceBetween,
-                runAlignment: WrapAlignment.start,
-                spacing: resp.responsiverw(width, 15),
-                runSpacing: resp.responsiver(height, 15),
-              ),
-            ),
-            SizedBox(
-              height: resp.responsiver(height, 15),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: resp.responsiver(height, 20),
-                right: stebPadding,
-                left: stebPadding,
-              ),
-              child: Card(
-                color: themeSetup.clear,
-                surfaceTintColor: themeSetup.clear,
-                shadowColor: themeSetup.clear,
-                child: Material(
-                  elevation: 1,
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    height: resp.responsiver(height, 136),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      gradient: const LinearGradient(
-                        colors: [
-                          themeSetup.bgColor,
-                          Color(0xffD2ECFB),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    padding: EdgeInsets.all(stebPadding),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Sabtu, 22 Agustus 2022",
-                              style: TextStyle(
-                                color: themeSetup.mainTextColor,
-                                fontFamily: "Plus Jakarta",
-                                fontWeight: FontWeight.w500,
-                                fontSize: resp.responsiver(height, 12),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/cuaca.png",
+                                    height: resp.responsiver(height, 76),
+                                    width: resp.responsiver(height, 96),
+                                    fit: BoxFit.fill,
+                                  ),
+                                  Text(
+                                    "Sedang Berawan",
+                                    style: TextStyle(
+                                      color: themeSetup.mainBlue,
+                                      fontFamily: "Plus Jakarta",
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: resp.responsiver(height, 12),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              "29°C",
-                              style: TextStyle(
-                                color: themeSetup.mainTextColor,
-                                fontFamily: "Plus Jakarta",
-                                fontWeight: FontWeight.w700,
-                                fontSize: resp.responsiver(height, 46),
-                              ),
-                            ),
-                            Text(
-                              "Jakarta Utara",
-                              style: TextStyle(
-                                color: themeSetup.mainTextColor,
-                                fontFamily: "Plus Jakarta",
-                                fontWeight: FontWeight.w500,
-                                fontSize: resp.responsiver(height, 12),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Image.asset(
-                              "assets/images/cuaca.png",
-                              height: resp.responsiver(height, 66),
-                              width: resp.responsiver(height, 86),
-                              fit: BoxFit.fill,
-                            ),
-                            Text(
-                              "Sedang Berawan",
-                              style: TextStyle(
-                                color: themeSetup.mainTextColor,
-                                fontFamily: "Plus Jakarta",
-                                fontWeight: FontWeight.w500,
-                                fontSize: resp.responsiver(height, 12),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            buildContentTitle("Travel News", height, width, true),
-            Padding(
-              padding: EdgeInsets.only(
-                right: stebPadding,
-                left: stebPadding,
-              ),
-              child: Card(
-                elevation: 1,
-                child: Container(
-                  height: resp.responsiver(height, 125),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: themeSetup.white),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: resp.responsiverw(width, 10),
-                  ),
-                  child: ListView.builder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        dense: true,
-                        enabled: true,
-                        title: Text(
-                          "Article Title",
-                          style: TextStyle(
-                            color: themeSetup.mainTextColor,
-                            fontFamily: "Plus Jakarta",
-                            fontWeight: FontWeight.w500,
-                            fontSize: resp.responsiver(height, 12),
+                            ],
                           ),
                         ),
-                        trailing: Text(
-                          "Date",
-                          style: TextStyle(
-                            color: themeSetup.secondaryTextColor,
-                            fontFamily: "Plus Jakarta",
-                            fontWeight: FontWeight.w500,
-                            fontSize: resp.responsiver(height, 8),
-                          ),
-                        ),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 0),
-                      );
+                      ),
+                    ),
+                  ),
+                  buildContentTitle("Travel News", height, width, true),
+                  travelNewsContent(stebPadding, height, width),
+                  buildContentTitle("Wisata Terdekat", height, width, true),
+                  wisataTerdekatContent(height, width, stebPadding),
+                  buildContentTitle("Wisata Kawasan", height, width, false),
+                  filterButton(height, stebPadding, wisataKawasanList),
+                  miniCarouselCard(
+                      true,
+                      true,
+                      height,
+                      width,
+                      stebPadding,
+                      "Place Name",
+                      "4.5",
+                      "Place Location",
+                      10,
+                      "assets/images/initialSplash1.png"),
+                  buildContentTitle("Event", height, width, true),
+                  buildContentTitle("Konversi Mata Uang", height, width, false),
+                  buildContentTitle("Hotel & Penginapan", height, width, true),
+                  miniCarouselCard(
+                      true,
+                      true,
+                      height,
+                      width,
+                      stebPadding,
+                      "Place Name",
+                      "4.5",
+                      "Place Location",
+                      10,
+                      "assets/images/initialSplash1.png"),
+                  buildContentTitle(
+                      "Referensi Perjalanan", height, width, true),
+                  miniCarouselCard(
+                      false,
+                      false,
+                      height,
+                      width,
+                      stebPadding,
+                      "Place Name Tour Reference",
+                      "4.5",
+                      "Place Location",
+                      10,
+                      "assets/images/initialSplash1.png"),
+                  buildContentTitle("Hashgram", height, width, false),
+                  filterButton(height, stebPadding, hashgram)
+                ],
+              ),
+            ),
+            Positioned.fill(
+              child: AnimatedOpacity(
+                opacity: isHamburgerOpen ? 1.0 : 0.0,
+                duration: Duration(milliseconds: 700),
+                child: Visibility(
+                  visible: isHamburgerVisible,
+                  child: GestureDetector(
+                    onTap: () async {
+                      if (isMenuTap == false) {
+                        isMenuTap = true;
+                        menuIcon = themeSetup.white;
+                        menuButton = themeSetup.alertColor;
+                        setState(
+                          () {
+                            isHamburgerOpen = true;
+                            isHamburgerVisible = true;
+                            menuAnimationCtrl.forward();
+                          },
+                        );
+                      } else {
+                        isMenuTap = false;
+                        menuIcon = themeSetup.mainBlue;
+                        menuButton = themeSetup.white;
+                        setState(
+                          () {
+                            isHamburgerOpen = false;
+                            menuAnimationCtrl.reverse();
+                          },
+                        );
+                        Future.delayed(
+                          Duration(milliseconds: 700),
+                          () {
+                            setState(
+                              () {
+                                isHamburgerVisible = false;
+                              },
+                            );
+                          },
+                        );
+                      }
                     },
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Color(0x80000000),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-            buildContentTitle("Wisata Terdekat", height, width, true),
-            buildContentTitle("Wisata Kawasan", height, width, false),
-            buildContentTitle("Event", height, width, true),
-            buildContentTitle("Konversi Mata Uang", height, width, false),
-            buildContentTitle("Hotel & Penginapan", height, width, true),
-            buildContentTitle("Referensi Perjalanan", height, width, true),
-            buildContentTitle("Hashgram", height, width, false),
+            Positioned.fill(
+              bottom: height / 7,
+              child: AnimatedOpacity(
+                opacity: isHamburgerOpen ? 1.0 : 0.0,
+                duration: Duration(milliseconds: 700),
+                child: Visibility(
+                  visible: isHamburgerVisible,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: stebPadding,
+                      right: stebPadding,
+                      top: resp.responsiver(height, 20) * 4,
+                    ),
+                    color: themeSetup.white,
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        if (index < hamburgerProps.length) {
+                          return SizedBox(
+                            height: resp.responsiver(height, 46),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: themeSetup.clear,
+                                  shadowColor: themeSetup.clear),
+                              onPressed: () {
+                                if (index < hamburgerProps.length - 1) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Category(
+                                        title: hamburgerProps.keys
+                                            .elementAt(index),
+                                        color: hamburgerColor.values
+                                            .elementAt(index),
+                                        header: hamburgerProps.keys
+                                            .elementAt(index),
+                                        backButton: true,
+                                        searchBar: hamburgerSearch.values
+                                            .elementAt(index),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        hamburgerProps.values.elementAt(index),
+                                        size: resp.responsiver(height, 15),
+                                        color: themeSetup.mainBlue,
+                                      ),
+                                      SizedBox(width: stebPadding / 2),
+                                      Text(
+                                        hamburgerProps.keys.elementAt(index),
+                                        style: TextStyle(
+                                          color: themeSetup.mainBlue,
+                                          fontFamily: "Plus Jakarta",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize:
+                                              resp.responsiver(height, 12),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  if (index == hamburgerProps.length - 1)
+                                    GestureDetector(
+                                      child: Text(""),
+                                      onTap: () {},
+                                    ),
+                                  if (index < hamburgerProps.length - 1)
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: resp.responsiver(height, 13),
+                                      color: themeSetup.mainBlue,
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              left: stebPadding,
+                              right: stebPadding,
+                              top: stebPadding),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: resp.responsiver(height, 239),
+                                height: resp.responsiver(height, 46),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: themeSetup.clear,
+                                    shadowColor: themeSetup.clear,
+                                    side: BorderSide(color: themeSetup.blue),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.lightbulb_outlined,
+                                        size: resp.responsiver(height, 20),
+                                        color: themeSetup.blue,
+                                      ),
+                                      SizedBox(
+                                        width: stebPadding / 2,
+                                      ),
+                                      Text(
+                                        "Quiz",
+                                        style: TextStyle(
+                                          color: themeSetup.blue,
+                                          fontFamily: "Plus Jakarta",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize:
+                                              resp.responsiver(height, 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Divider(
+                        thickness: 1,
+                      ),
+                      itemCount: hamburgerProps.length + 1,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: resp.responsiver(height, 15),
+                right: stebPadding,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: resp.responsiver(height, 32),
+                    width: resp.responsiver(height, 32),
+                    child: FloatingActionButton(
+                      heroTag: UniqueKey(),
+                      backgroundColor: themeSetup.white,
+                      elevation: 2,
+                      onPressed: () {
+                        setState(() {
+                          isAudioPlayed = !isAudioPlayed;
+                        });
+                      },
+                      child: Icon(
+                        isAudioPlayed ? Icons.stop : Icons.headset_outlined,
+                        size: resp.responsiver(height, 16),
+                        color: themeSetup.mainBlue,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: resp.responsiverw(width, 10),
+                  ),
+                  SizedBox(
+                    height: resp.responsiver(height, 32),
+                    width: resp.responsiver(height, 32),
+                    child: FloatingActionButton(
+                      heroTag: UniqueKey(),
+                      backgroundColor: themeSetup.white,
+                      elevation: 2,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Category(
+                                title: "Notifikasi",
+                                color: themeSetup.accentColor,
+                                header: "Notifikasi",
+                                backButton: true,
+                                searchBar: false),
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        Icons.notifications_outlined,
+                        size: resp.responsiver(height, 16),
+                        color: themeSetup.mainBlue,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: resp.responsiverw(width, 10),
+                  ),
+                  SizedBox(
+                    height: resp.responsiver(height, 32),
+                    width: resp.responsiver(height, 32),
+                    child: FloatingActionButton(
+                      heroTag: UniqueKey(),
+                      backgroundColor: menuButton,
+                      elevation: 2,
+                      onPressed: () async {
+                        if (isMenuTap == false) {
+                          isMenuTap = true;
+                          menuIcon = themeSetup.white;
+                          menuButton = themeSetup.alertColor;
+                          setState(
+                            () {
+                              isHamburgerOpen = true;
+                              isHamburgerVisible = true;
+                              menuAnimationCtrl.forward();
+                            },
+                          );
+                        } else {
+                          isMenuTap = false;
+                          menuIcon = themeSetup.mainBlue;
+                          menuButton = themeSetup.white;
+                          setState(
+                            () {
+                              isHamburgerOpen = false;
+                              menuAnimationCtrl.reverse();
+                            },
+                          );
+                          Future.delayed(
+                            Duration(milliseconds: 700),
+                            () {
+                              setState(
+                                () {
+                                  isHamburgerVisible = false;
+                                },
+                              );
+                            },
+                          );
+                        }
+                      },
+                      child: AnimatedIcon(
+                        icon: AnimatedIcons.menu_close,
+                        progress: menuAnimationCtrl,
+                        size: resp.responsiver(height, 16),
+                        color: menuIcon,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            AnimatedOpacity(
+              opacity: isHamburgerOpen ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 700),
+              child: Visibility(
+                visible: isHamburgerVisible,
+                child: Padding(
+                  padding: EdgeInsets.all(stebPadding),
+                  child: Image.asset(
+                    'assets/images/plusJakarta.png',
+                    width: resp.responsiver(height, 18),
+                    height: resp.responsiver(height, 30),
+                    color: themeSetup.black,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Map categoryIcon = {
-    "Alam": Icons.landscape,
-    "Belanja": Icons.shopping_cart,
-    "Olahraga": FontAwesomeIcons.personRunning,
-    "Religi": FontAwesomeIcons.handHoldingHeart,
-    "Sejarah": Icons.temple_hindu,
-    "Kuliner": Icons.restaurant,
-    "Arsitektur": FontAwesomeIcons.monument,
-    "Budaya": FontAwesomeIcons.masksTheater,
-    "MICE": Icons.confirmation_num,
-    "Rekreasi": Icons.attractions,
-  };
+  filterButton(double height, double stebPadding, List data) {
+    return Container(
+      height: resp.responsiver(height, 30),
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: stebPadding),
+        scrollDirection: Axis.horizontal,
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.all(
+              resp.responsiver(height, 4),
+            ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(
+                  resp.responsiver(height, 4),
+                ),
+                child: Text(
+                  data[index],
+                  style: TextStyle(
+                    color: themeSetup.blue,
+                    fontFamily: "Plus Jakarta",
+                    fontWeight: FontWeight.w500,
+                    fontSize: resp.responsiver(height, 10),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  miniCarouselCard(
+    bool isRating,
+    bool isLocation,
+    double height,
+    double width,
+    double stebPadding,
+    String title,
+    String rating,
+    String location,
+    int itemCount,
+    String imagePath,
+  ) {
+    return SizedBox(
+      height: resp.responsiver(height, 211),
+      width: resp.responsiverw(width, 146),
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: stebPadding),
+        scrollDirection: Axis.horizontal,
+        itemCount: itemCount,
+        itemBuilder: (context, index) {
+          return Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(
+                resp.responsiver(height, 5),
+              ),
+              child: AspectRatio(
+                aspectRatio: 0.66,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Card(
+                      elevation: 3,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Image.asset(
+                              imagePath,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xb3000000),
+                                      themeSetup.clear,
+                                      themeSetup.clear,
+                                      themeSetup.clear,
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter),
+                              ),
+                            ),
+                          ),
+                          AspectRatio(
+                            aspectRatio: 0.85,
+                            child: Container(
+                              padding: EdgeInsets.all(
+                                resp.responsiver(height, 10),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Visibility(
+                                    visible: isRating,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.star,
+                                              size:
+                                                  resp.responsiver(height, 15),
+                                              color: Color(0xffFFD748),
+                                            ),
+                                            Text(
+                                              rating,
+                                              style: TextStyle(
+                                                color: themeSetup.white,
+                                                fontFamily: "Plus Jakarta",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: resp.responsiver(
+                                                    height, 12),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: resp.responsiver(height, 5),
+                    ),
+                    SizedBox(
+                      width: resp.responsiver(height, 118),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  title + "$index",
+                                  style: TextStyle(
+                                    color: themeSetup.mainBlue,
+                                    fontFamily: "Plus Jakarta",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: resp.responsiver(height, 12),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Visibility(
+                            visible: isLocation,
+                            child: SizedBox(
+                              height: resp.responsiver(height, 8),
+                            ),
+                          ),
+                          Visibility(
+                            visible: isLocation,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.location_on_rounded,
+                                  color: themeSetup.blue,
+                                  size: resp.responsiver(height, 12),
+                                ),
+                                Text(
+                                  "  " + location,
+                                  style: TextStyle(
+                                    color: themeSetup.secondaryTextColor,
+                                    fontFamily: "Plus Jakarta",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: resp.responsiver(height, 8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  travelNewsContent(double stebPadding, double height, double width) {
+    return Padding(
+      padding: EdgeInsets.only(
+        right: stebPadding,
+        left: stebPadding,
+      ),
+      child: Card(
+        elevation: 3,
+        child: Container(
+          height: resp.responsiver(height, 135),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8), color: themeSetup.white),
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(
+              horizontal: resp.responsiverw(width, 10),
+            ),
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return ListTile(
+                dense: true,
+                enabled: true,
+                visualDensity: VisualDensity(vertical: -4),
+                title: Text(
+                  "Article Title $index",
+                  style: TextStyle(
+                    color: themeSetup.mainBlue,
+                    fontFamily: "Plus Jakarta",
+                    fontWeight: FontWeight.w500,
+                    fontSize: resp.responsiver(height, 12),
+                  ),
+                ),
+                trailing: Text(
+                  "22 Desember 2022",
+                  style: TextStyle(
+                    color: themeSetup.secondaryTextColor,
+                    fontFamily: "Plus Jakarta",
+                    fontWeight: FontWeight.w500,
+                    fontSize: resp.responsiver(height, 8),
+                  ),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return Divider(
+                thickness: 1,
+                color: Colors.black,
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  wisataTerdekatContent(double height, double width, double stebPadding) {
+    return SizedBox(
+      height: resp.responsiver(height, 332),
+      width: resp.responsiverw(width, 187),
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: stebPadding),
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Card(
+            elevation: 3,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Image.asset(
+                    "assets/images/initialSplash1.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [
+                          themeSetup.clear,
+                          themeSetup.clear,
+                          themeSetup.clear,
+                          Color(0xb3000000)
+                        ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter)),
+                  ),
+                ),
+                AspectRatio(
+                  aspectRatio: 0.56,
+                  child: Container(
+                    padding: EdgeInsets.all(
+                      resp.responsiver(height, 10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              height: resp.responsiver(height, 24),
+                              width: resp.responsiver(height, 48),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Color(0x80ffffff),
+                                  borderRadius: BorderRadius.circular(
+                                      resp.responsiver(height, 8)),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      size: resp.responsiver(height, 15),
+                                      color: Color(0xffFFD748),
+                                    ),
+                                    Text(
+                                      " 5.0",
+                                      style: TextStyle(
+                                        color: themeSetup.mainBlue,
+                                        fontFamily: "Plus Jakarta",
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: resp.responsiver(height, 12),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Place Name$index",
+                                  style: TextStyle(
+                                    color: themeSetup.white,
+                                    fontFamily: "Plus Jakarta",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: resp.responsiver(height, 12),
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      height: resp.responsiver(height, 24),
+                                      width: resp.responsiver(height, 24),
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: themeSetup.gray,
+                                        ),
+                                        child: Icon(
+                                          Icons.bookmark,
+                                          size: resp.responsiver(height, 14),
+                                          color: themeSetup.white,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: stebPadding / 2,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: resp.responsiver(height, 10),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_rounded,
+                                      color: themeSetup.white,
+                                      size: resp.responsiver(height, 12),
+                                    ),
+                                    Text(
+                                      "  Place Location",
+                                      style: TextStyle(
+                                        color: themeSetup.white,
+                                        fontFamily: "Plus Jakarta",
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: resp.responsiver(height, 8),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  "3 Km",
+                                  style: TextStyle(
+                                    color: themeSetup.white,
+                                    fontFamily: "Plus Jakarta",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: resp.responsiver(height, 8),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  List wisataKawasanList = [
+    "Lihat Semua",
+    "Kemang",
+    "Ancol",
+    "Jatinegara",
+    "Kebon Jeruk",
+    "Cipete"
+  ];
+
+  List hashgram = [
+    "Lihat Semua",
+    "#EnjoyJakartaApp",
+    "#JakartaTourism",
+    "#CityTourJakarta",
+    "#JakartaSatu",
+    "#JakartaKita"
+  ];
 
   Map categoryIndex = {
     "Alam": 0,
@@ -506,16 +1232,68 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
     "Rekreasi": themeSetup.rekreasi,
   };
 
+  Map hamburgerProps = {
+    "Ulasan": Icons.star,
+    "Poin User": FontAwesomeIcons.coins,
+    "Level & Benefit": Icons.info,
+    "Ranking": FontAwesomeIcons.crown,
+    "Keluhan": Icons.forum,
+    "FAQ": Icons.quiz,
+    "Bahasa": Icons.public
+  };
+
+  Map hamburgerColor = {
+    "Ulasan": themeSetup.accentColor,
+    "Poin User": Color(0xffC7EBFF),
+    "Level & Benefit": Color(0xffC7EBFF),
+    "Ranking": Color(0xffC7EBFF),
+    "Keluhan": themeSetup.accentColor,
+    "FAQ": themeSetup.accentColor,
+    "Bahasa": ""
+  };
+
+  Map hamburgerSearch = {
+    "Ulasan": true,
+    "Poin User": false,
+    "Level & Benefit": false,
+    "Ranking": false,
+    "Keluhan": false,
+    "FAQ": false,
+    "Bahasa": ""
+  };
+
   getCategoryButton(index, data) {
     var label = categoryIndex.entries.firstWhere((e) => e.value == index).key;
 
     if (data == "label") {
       return label;
-    } else if (data == "icon") {
-      return categoryIcon.entries.firstWhere((e) => e.key == label).value;
     } else if (data == "color") {
       return categoryColor.entries.firstWhere((e) => e.key == label).value;
     }
+  }
+
+  buildWisataKawasanFilter(title, height, width) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Color(0x80ffffff),
+        borderRadius: BorderRadius.circular(resp.responsiver(height, 8)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: themeSetup.mainBlue,
+              fontFamily: "Plus Jakarta",
+              fontWeight: FontWeight.w700,
+              fontSize: resp.responsiver(height, 12),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   buildButton(index, height, width) {
@@ -524,10 +1302,11 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ElevatedButton(
-          child: Icon(
-            getCategoryButton(index, "icon"),
-            size: resp.responsiver(height, 20),
-            color: themeSetup.white,
+          child: Image.asset(
+            'assets/images/' + getCategoryButton(index, "label") + '.png',
+            width: resp.responsiver(height, 20),
+            height: resp.responsiver(height, 20),
+            fit: BoxFit.contain,
           ),
           onPressed: () {
             Navigator.push(
@@ -536,7 +1315,9 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
                 builder: (context) => Category(
                   title: getCategoryButton(index, "label"),
                   color: getCategoryButton(index, "color"),
+                  header: getCategoryButton(index, "label"),
                   backButton: true,
+                  searchBar: true,
                 ),
               ),
             );
@@ -555,7 +1336,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
         Text(
           getCategoryButton(index, "label"),
           style: TextStyle(
-            color: themeSetup.mainTextColor,
+            color: themeSetup.mainBlue,
             fontFamily: "Plus Jakarta",
             fontWeight: FontWeight.w400,
             fontSize: resp.responsiver(height, 12),
@@ -580,7 +1361,7 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
           Text(
             txt,
             style: TextStyle(
-              color: themeSetup.mainTextColor,
+              color: themeSetup.mainBlue,
               fontFamily: "Plus Jakarta",
               fontWeight: FontWeight.w700,
               fontSize: resp.responsiver(height, 16),
@@ -603,9 +1384,12 @@ class _Homepage extends State<Homepage> with TickerProviderStateMixin {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Category(
-                            title: txt,
-                            color: themeSetup.accentColor,
-                            backButton: true),
+                          title: txt,
+                          color: themeSetup.accentColor,
+                          header: txt,
+                          backButton: true,
+                          searchBar: true,
+                        ),
                       ),
                     );
                   },

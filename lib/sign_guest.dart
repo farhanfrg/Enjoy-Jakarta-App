@@ -18,7 +18,7 @@ class _SignGuestState extends State<SignGuest> {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    final double stebPadding = resp.responsiverw(width, 16);
+    final double stebPadding = resp.responsiver(height, 16);
     return Scaffold(
       body: Center(
         child: Stack(
@@ -27,7 +27,7 @@ class _SignGuestState extends State<SignGuest> {
             Column(
               children: [
                 Image.asset(
-                  'assets/images/initialSplash1.png',
+                  'assets/images/homepic.png',
                   fit: BoxFit.cover,
                   height: height,
                   width: width,
@@ -37,29 +37,33 @@ class _SignGuestState extends State<SignGuest> {
             ),
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(
-                  stebPadding, 0, stebPadding, stebPadding),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                elevation: 15,
-                child: SizedBox(
-                  height: resp.responsiver(height, 231),
-                  width: double.infinity,
+                stebPadding,
+                0,
+                stebPadding,
+                stebPadding,
+              ),
+              child: SizedBox(
+                height: resp.responsiver(height, 231),
+                width: resp.responsiverw(width, 343),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 15,
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(stebPadding),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
                           "Welcome",
                           style: TextStyle(
-                              color: themeSetup.black,
-                              fontFamily: "Plus Jakarta",
-                              fontWeight: FontWeight.w700,
-                              fontSize: resp.responsiver(height, 24)),
-                        ),
-                        SizedBox(
-                          height: 5,
+                            color: themeSetup.black,
+                            fontFamily: "Plus Jakarta",
+                            fontWeight: FontWeight.w700,
+                            fontSize: resp.responsiver(height, 24),
+                          ),
                         ),
                         Text(
                           "Explore Jakarta with us.",
@@ -70,19 +74,15 @@ class _SignGuestState extends State<SignGuest> {
                             fontSize: resp.responsiver(height, 20),
                           ),
                         ),
-                        SizedBox(
-                          height: 12,
-                        ),
                         Container(
                           width: double.infinity,
-                          height: resp.responsiver(height, 45),
+                          height: resp.responsiver(height, 52),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: themeSetup.accentColor,
                               elevation: 2,
                             ),
                             onPressed: () {
-                              print(resp.responsiver(height, 20));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -99,12 +99,9 @@ class _SignGuestState extends State<SignGuest> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 12,
-                        ),
                         Container(
                           width: double.infinity,
-                          height: resp.responsiver(height, 45),
+                          height: resp.responsiver(height, 52),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: themeSetup.white,

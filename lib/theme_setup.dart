@@ -15,6 +15,7 @@ class themeSetup {
   static const secondaryTextColor = Color(0xffa19f9f);
   static const descriptionColor = Color(0xff546880);
   static const alertColor = Colors.red;
+  static const mainBlue = Color(0xff1C3A5E);
 
   static const alam = Color(0xff86BB50);
   static const belanja = Color(0xff6659A1);
