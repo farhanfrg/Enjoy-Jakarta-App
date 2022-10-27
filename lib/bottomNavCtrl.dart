@@ -6,6 +6,7 @@ import 'package:enjoyjakarta/theme_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'responsiver.dart';
+import 'global.dart' as globals;
 
 class BottomNavCtrl extends StatefulWidget {
   final String title;
@@ -29,7 +30,7 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
         PersistentBottomNavBarItem(
           icon: Icon(
             Icons.home_filled,
-            size: resp.responsiver(height, 35),
+            size: resp.responsiver(height, 25),
           ),
           title: "Home",
           activeColorPrimary: themeSetup.accentColor,
@@ -38,7 +39,7 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
         PersistentBottomNavBarItem(
           icon: Icon(
             Icons.location_on_rounded,
-            size: resp.responsiver(height, 35),
+            size: resp.responsiver(height, 25),
           ),
           title: "Maps",
           activeColorPrimary: themeSetup.accentColor,
@@ -47,7 +48,7 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
         PersistentBottomNavBarItem(
           icon: Icon(
             Icons.bookmark,
-            size: resp.responsiver(height, 35),
+            size: resp.responsiver(height, 25),
           ),
           title: "Saved",
           activeColorPrimary: themeSetup.accentColor,
@@ -56,7 +57,7 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
         PersistentBottomNavBarItem(
           icon: Icon(
             Icons.person,
-            size: resp.responsiver(height, 35),
+            size: resp.responsiver(height, 25),
           ),
           title: "Profile",
           activeColorPrimary: themeSetup.accentColor,
@@ -87,7 +88,7 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
         duration: Duration(milliseconds: 200),
       ),
       navBarStyle: NavBarStyle.style12,
-      navBarHeight: resp.responsiver(height, 62),
+      navBarHeight: resp.responsiver(height, 55),
     );
   }
 
@@ -96,11 +97,13 @@ class _BottomNavCtrl extends State<BottomNavCtrl> {
       const Homepage(title: "Homepage"),
       const Maps(title: "Maps"),
       Category(
-          title: "Wisata Tersimpan",
-          color: themeSetup.accentColor,
-          header: "Wisata Tersimpan",
-          backButton: false,
-          searchBar: true),
+        title: "Wisata Tersimpan",
+        color: themeSetup.accentColor,
+        header: "Wisata Tersimpan",
+        backButton: false,
+        searchBar: true,
+        contentType: 1,
+      ),
       const Profile(title: "Profile")
     ];
   }

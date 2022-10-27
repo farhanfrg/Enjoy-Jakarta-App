@@ -1,11 +1,22 @@
-2022/10/26-02:31:49.622 37f4 Reusing MANIFEST C:\Users\FARHAN~1\AppData\Local\Temp\flutter_tools.90585154\flutter_tools_chrome_device.54aa55e8\Default\Local Storage\leveldb/MANIFEST-000001
-2022/10/26-02:31:49.627 37f4 Recovering log #28
-2022/10/26-02:31:49.629 37f4 Reusing old log C:\Users\FARHAN~1\AppData\Local\Temp\flutter_tools.90585154\flutter_tools_chrome_device.54aa55e8\Default\Local Storage\leveldb/000028.log 
-2022/10/26-02:31:49.631 37f4 Delete type=2 #7
-2022/10/26-02:31:49.631 37f4 Delete type=2 #10
-2022/10/26-02:31:49.631 37f4 Delete type=2 #13
-2022/10/26-02:31:49.631 37f4 Delete type=0 #15
-2022/10/26-02:31:49.631 37f4 Delete type=2 #16
-2022/10/26-02:31:49.631 37f4 Delete type=0 #18
-2022/10/26-02:31:49.631 37f4 Delete type=0 #22
-2022/10/26-02:31:49.632 37f4 Delete type=0 #25
+2022/10/27-16:32:44.132 4c24 Reusing MANIFEST C:\Users\FARHAN~1\AppData\Local\Temp\flutter_tools.9c4c4454\flutter_tools_chrome_device.e6c687b7\Default\Local Storage\leveldb/MANIFEST-000001
+2022/10/27-16:32:44.152 4c24 Recovering log #28
+2022/10/27-16:32:44.154 4c24 Level-0 table #31: started
+2022/10/27-16:32:44.167 4c24 Level-0 table #31: 16454 bytes OK
+2022/10/27-16:32:44.180 4c24 Delete type=2 #7
+2022/10/27-16:32:44.180 4c24 Delete type=2 #10
+2022/10/27-16:32:44.180 4c24 Delete type=2 #13
+2022/10/27-16:32:44.180 4c24 Delete type=0 #15
+2022/10/27-16:32:44.180 4c24 Delete type=2 #16
+2022/10/27-16:32:44.180 4c24 Delete type=0 #18
+2022/10/27-16:32:44.180 4c24 Delete type=0 #22
+2022/10/27-16:32:44.180 4c24 Delete type=0 #25
+2022/10/27-16:32:44.180 4c24 Delete type=0 #28
+2022/10/27-16:32:44.198 858 Compacting 4@0 + 1@1 files
+2022/10/27-16:32:44.226 858 Generated table #33@0: 998 keys, 70794 bytes
+2022/10/27-16:32:44.226 858 Compacted 4@0 + 1@1 files => 70794 bytes
+2022/10/27-16:32:44.229 858 compacted to: files[ 0 1 1 0 0 0 0 ]
+2022/10/27-16:32:44.231 858 Delete type=2 #20
+2022/10/27-16:32:44.231 858 Delete type=2 #23
+2022/10/27-16:32:44.231 858 Delete type=2 #26
+2022/10/27-16:32:44.231 858 Delete type=2 #29
+2022/10/27-16:32:44.231 858 Delete type=2 #31

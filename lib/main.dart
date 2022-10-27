@@ -1,20 +1,14 @@
 import 'package:enjoyjakarta/bottomNavCtrl.dart';
-import 'package:enjoyjakarta/homepage.dart';
-import 'package:enjoyjakarta/regist_screen.dart';
-import 'package:enjoyjakarta/reset_pass.dart';
-import 'package:enjoyjakarta/sign_guest.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
-import 'splashscreen.dart';
-import 'sign_guest.dart';
-import 'theme_setup.dart' as themeSetup;
-import 'responsiver.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('id_ID', null).then((_) => runApp(MyApp()));
+  await initializeDateFormatting('id_ID', null).then(
+    (_) => runApp(
+      MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

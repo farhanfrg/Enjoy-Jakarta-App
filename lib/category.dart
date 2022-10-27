@@ -1,12 +1,7 @@
-import 'package:enjoyjakarta/login_screen.dart';
-import 'package:enjoyjakarta/splashscreen.dart';
 import 'package:enjoyjakarta/theme_setup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:http/http.dart' as http;
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'responsiver.dart';
+import 'categoryContent.dart';
 
 class Category extends StatefulWidget {
   final String title;
@@ -14,14 +9,16 @@ class Category extends StatefulWidget {
   final String header;
   final bool backButton;
   final bool searchBar;
-  const Category(
-      {Key? key,
-      required this.title,
-      required this.color,
-      required this.header,
-      required this.backButton,
-      required this.searchBar})
-      : super(key: key);
+  final int contentType;
+  const Category({
+    Key? key,
+    required this.title,
+    required this.color,
+    required this.header,
+    required this.backButton,
+    required this.searchBar,
+    required this.contentType,
+  }) : super(key: key);
 
   @override
   State<Category> createState() => _Category();
@@ -94,7 +91,7 @@ class _Category extends State<Category> {
                     ),
                   ),
                 ),
-                if (widget.color == themeSetup.accentColor)
+                if (widget.color != Color(0xffC7EBFF))
                   Positioned.fill(
                     bottom: searchBarHeight / 2,
                     child: Image.asset(
@@ -174,15 +171,32 @@ class _Category extends State<Category> {
                 ),
               ),
               preferredSize: Size.fromHeight(
-                widget.searchBar
-                    ? resp.responsiver(height, 51)
-                    : resp.responsiver(height, 29),
+                resp.responsiver(height, 29),
               ),
             ),
           ),
         ],
-        body: const Text(""),
+        body: categoryBody(
+          widget.contentType,
+          stebPadding,
+          height,
+          width,
+          appBarTitle,
+        ),
       ),
     );
+  }
+
+  categoryBody(bodyType, stebPadding, height, width, appBarTitle) {
+    switch (bodyType) {
+      case 1: //Category Default
+        return CategoryContent.widget(stebPadding, height, width, appBarTitle);
+      case 2: // Hotel Content
+        return CategoryContent.widget2(
+            stebPadding, height, width, appBarTitle, true);
+      case 3: // Wisata Terdekat Content
+        return CategoryContent.widget2(
+            stebPadding, height, width, appBarTitle, false);
+    }
   }
 }
